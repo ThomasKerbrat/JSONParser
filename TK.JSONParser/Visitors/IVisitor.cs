@@ -4,16 +4,16 @@ namespace TK.JSONParser.Visitors
 {
     public interface IVisitor<T>
     {
-        T Visit(ArrayNode expression);
+        T Visit(ArrayNode node);
 
-        T Visit(ObjectNode expression);
+        T Visit(ObjectNode node);
 
-        T Visit(MemberNode expression);
+        T Visit(KeyValueNode node);
 
-        T Visit(NumberExpression expression);
+        T Visit(NumberNode node);
 
-        T Visit(StringExpression expression);
+        T Visit(StringNode node);
 
-        T Visit(ErrorNode expression);
+        T Visit(ErrorNode node);
     }
 }

@@ -15,17 +15,17 @@ namespace TK.JSONParser.Visitors
             throw new NotImplementedException();
         }
 
-        public string Visit(NumberExpression expression)
+        public string Visit(NumberNode expression)
         {
             throw new NotImplementedException();
         }
 
-        public string Visit(StringExpression expression)
+        public string Visit(KeyValueNode node)
         {
             throw new NotImplementedException();
         }
 
-        public string Visit(MemberNode expression)
+        public string Visit(StringNode expression)
         {
             throw new NotImplementedException();
         }
