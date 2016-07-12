@@ -63,6 +63,7 @@ namespace TK.JSONParser.Tests
             => assert_token_type(input, expected);
 
         [TestCase(" // this is a comment ", TokenType.Comment, " this is a comment ")]
+        [TestCase(" /* this is a comment */ ", TokenType.Comment, " this is a comment ")]
         public void tokenizer_should_support_comments(string input, TokenType expectedType, string expectedValue)
             => assert_token(input, expectedType, expectedValue);
 

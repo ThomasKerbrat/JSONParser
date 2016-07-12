@@ -87,6 +87,7 @@ namespace TK.JSONParser.Tokens
             //else if (IsExponent) result = HandleExponent();
             else if (IsIdentifier) result = HandleIdentifier();
             else if (IsString) result = HandleString();
+            else result = new Token(TokenType.Error, Peek());
 
             return CurrentToken = result;
         }
@@ -209,7 +210,7 @@ namespace TK.JSONParser.Tokens
             switch (Peek())
             {
                 case '/': return HandleInLineComment();
-                //case '*': return HandleMultiLineComment();
+                case '*': return HandleMultiLineComment();
                 default: return new Token(TokenType.Error, Peek());
             }
         }
@@ -227,6 +228,22 @@ namespace TK.JSONParser.Tokens
             {
                 sb.Append(Read());
             }
+
+            return new Token(TokenType.Comment, sb.ToString());
+        }
+
+        private Token HandleMultiLineComment()
+        {
+            var sb = new StringBuilder();
+
+            Forward();
+            while (!IsEnd() && Peek() != '*' && Peek(1) != '/')
+            {
+                sb.Append(Read());
+            }
+
+            Forward();
+            Forward();
 
             return new Token(TokenType.Comment, sb.ToString());
         }
