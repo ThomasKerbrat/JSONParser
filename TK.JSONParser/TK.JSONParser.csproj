@@ -41,7 +41,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Parsing\Nodes\ArrayNode.cs" />
+    <Compile Include="Parsing\Nodes\CommentNode.cs" />
     <Compile Include="Parsing\Nodes\ErrorNode.cs" />
+    <Compile Include="Parsing\Nodes\ICommentable.cs" />
     <Compile Include="Parsing\Nodes\IConstantNode.cs" />
     <Compile Include="Parsing\Nodes\KeyValueNode.cs" />
     <Compile Include="Parsing\Nodes\NumberNode.cs" />

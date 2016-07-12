@@ -96,7 +96,36 @@ namespace TK.JSONParser.Tests
             var parser = new Parser(input);
             INode expression = parser.ParseJSON();
             Assert.That(expression, Is.Not.TypeOf<ErrorNode>());
+        }
 
+        [Test]
+        public void parser_should_parse_comments()
+        {
+            var input = "{ \"random number\" : 999, // This is the ultimate answer\r\n\"life\" : 42, /* Only the half of the answer. */ \"efil\": 21 }";
+            var parser = new Parser(input);
+
+            INode expression = parser.ParseJSON();
+
+            Assert.That(expression, Is.TypeOf<ObjectNode>());
+            ObjectNode @object = (ObjectNode)expression;
+
+            Assert.That(@object.Items.Count, Is.EqualTo(3));
+
+            Assert.That(@object.Items[0].Key.Value, Is.EqualTo("random number"));
+            Assert.That(@object.Items[0].Value, Is.TypeOf<NumberNode>());
+            Assert.That(((NumberNode)@object.Items[0].Value).Value, Is.EqualTo(999));
+
+            Assert.That(@object.Items[1].Key.Value, Is.EqualTo("life"));
+            Assert.That(@object.Items[1].Value, Is.TypeOf<NumberNode>());
+            Assert.That(((NumberNode)@object.Items[1].Value).Value, Is.EqualTo(42));
+            Assert.That(@object.Items[1].Comment, Is.TypeOf<CommentNode>());
+            Assert.That(((CommentNode)@object.Items[1].Comment).Value, Is.EqualTo(" This is the ultimate answer"));
+
+            Assert.That(@object.Items[2].Key.Value, Is.EqualTo("efil"));
+            Assert.That(@object.Items[2].Value, Is.TypeOf<NumberNode>());
+            Assert.That(((NumberNode)@object.Items[2].Value).Value, Is.EqualTo(21));
+            Assert.That(@object.Items[2].Comment, Is.TypeOf<CommentNode>());
+            Assert.That(((CommentNode)@object.Items[2].Comment).Value, Is.EqualTo(" Only the half of the answer. "));
         }
     }
 }

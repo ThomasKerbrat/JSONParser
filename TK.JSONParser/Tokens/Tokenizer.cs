@@ -81,11 +81,13 @@ namespace TK.JSONParser.Tokens
             else if (Peek() == ',') result = HandleSimpleToken(TokenType.Comma);
             else if (Peek() == '-') result = HandleSimpleToken(TokenType.Minus);
             else if (Peek() == '+') result = HandleSimpleToken(TokenType.Plus);
+            else if (Peek() == '/') result = HandleComments();
             else if (IsInteger) result = HandleInteger();
             //else if (IsFraction) result = HandleFraction();
             //else if (IsExponent) result = HandleExponent();
             else if (IsIdentifier) result = HandleIdentifier();
             else if (IsString) result = HandleString();
+            else result = new Token(TokenType.Error, Peek());
 
             return CurrentToken = result;
         }
@@ -196,6 +198,54 @@ namespace TK.JSONParser.Tokens
             Forward();
 
             return new Token(TokenType.String, sb.ToString());
+        }
+
+        /// <summary>
+        /// Create a new <see cref="Token"/> that contains the comment value.
+        /// </summary>
+        /// <returns>A new <see cref="Token"/>.</returns>
+        private Token HandleComments()
+        {
+            Forward();
+            switch (Peek())
+            {
+                case '/': return HandleInLineComment();
+                case '*': return HandleMultiLineComment();
+                default: return new Token(TokenType.Error, Peek());
+            }
+        }
+
+        /// <summary>
+        /// Handle single line comments.
+        /// </summary>
+        /// <returns>A new <see cref="Token"/>.</returns>
+        private Token HandleInLineComment()
+        {
+            var sb = new StringBuilder();
+
+            Forward();
+            while (!IsEnd() && Peek() != '\r' && Peek() != '\n')
+            {
+                sb.Append(Read());
+            }
+
+            return new Token(TokenType.Comment, sb.ToString());
+        }
+
+        private Token HandleMultiLineComment()
+        {
+            var sb = new StringBuilder();
+
+            Forward();
+            while (!IsEnd() && Peek() != '*' && Peek(1) != '/')
+            {
+                sb.Append(Read());
+            }
+
+            Forward();
+            Forward();
+
+            return new Token(TokenType.Comment, sb.ToString());
         }
 
         #endregion
