@@ -25,11 +25,11 @@ namespace TK.JSONParser.Parsing.Nodes
         {
             if (existingKeys == null)
                 existingKeys = new List<string>();
-            else if (existingKeys.Contains(node.Key))
+            else if (existingKeys.Contains(node.Key.Value))
                 return false;
 
             items.Add(node);
-            existingKeys.Add(node.Key);
+            existingKeys.Add(node.Key.Value);
             return true;
         }
 

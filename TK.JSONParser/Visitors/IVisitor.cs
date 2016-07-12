@@ -1,4 +1,5 @@
-﻿using TK.JSONParser.Parsing.Nodes;
+﻿using TK.JSONParser.Parsing;
+using TK.JSONParser.Parsing.Nodes;
 
 namespace TK.JSONParser.Visitors
 {
@@ -15,5 +16,11 @@ namespace TK.JSONParser.Visitors
         T Visit(StringNode node);
 
         T Visit(ErrorNode node);
+    }
+
+    public static class IVisitorExtentions
+    {
+        public static T Visit<T>(this IVisitor<T> @this, INode node)
+            => node.Accept(@this);
     }
 }

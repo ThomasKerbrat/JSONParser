@@ -37,11 +37,11 @@ namespace TK.JSONParser.Tests
             ObjectNode @object = (ObjectNode)expression;
             Assert.That(@object.Items.Count, Is.EqualTo(2));
 
-            Assert.That(@object.Items[0].Key, Is.EqualTo("prop1"));
+            Assert.That(@object.Items[0].Key.Value, Is.EqualTo("prop1"));
             Assert.That(@object.Items[0].Value, Is.TypeOf<NumberNode>());
             Assert.That(((NumberNode)@object.Items[0].Value).Value, Is.EqualTo(123));
 
-            Assert.That(@object.Items[1].Key, Is.EqualTo("prop2"));
+            Assert.That(@object.Items[1].Key.Value, Is.EqualTo("prop2"));
             Assert.That(@object.Items[1].Value, Is.TypeOf<StringNode>());
             Assert.That(((StringNode)@object.Items[1].Value).Value, Is.EqualTo("value"));
         }

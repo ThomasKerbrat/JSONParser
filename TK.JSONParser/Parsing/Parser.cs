@@ -69,7 +69,7 @@ namespace TK.JSONParser.Parsing
 
                 KeyValueNode member = (KeyValueNode)expression;
                 if (!@object.AddItem(member))
-                    return new ErrorNode(string.Format("Member \"{0}\" already present in object.", member.Key));
+                    return new ErrorNode(string.Format("Member \"{0}\" already present in object.", member.Key.Value));
 
                 tokenizer.MatchToken(TokenType.Comma);
             }
