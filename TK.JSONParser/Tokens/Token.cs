@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TK.JSONParser.Tokens
+﻿namespace TK.JSONParser.Tokens
 {
     public class Token
     {
@@ -23,7 +17,7 @@ namespace TK.JSONParser.Tokens
         { }
 
 
-        public object Type { get; private set; }
-        public object Value { get; private set; }
+        public TokenType Type { get; private set; }
+        public string Value { get; private set; }
     }
 }

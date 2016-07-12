@@ -1,9 +1,4 @@
 ﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TK.JSONParser.Tokens;
 
 namespace TK.JSONParser.Tests
@@ -11,26 +6,18 @@ namespace TK.JSONParser.Tests
     [TestFixture]
     class TokenizerTests
     {
-        [Test]
-        public void empty() { }
+        #region Helper Methods
 
-        #region Util Methods
-
-        private void assert_token_type_and_value(string input, TokenType expected, bool skipType = false, bool skipValue = false)
+        private void assert_token(string input, TokenType expectedType, string expectedValue, bool assertValue = true)
         {
             Tokenizer tokenizer = new Tokenizer(input);
-
             Token token = tokenizer.GetNextToken();
-
-            if (!skipType) Assert.That(token.Type, Is.EqualTo(expected));
-            if (!skipValue) Assert.That(token.Value, Is.EqualTo(input));
+            Assert.That(token.Type, Is.EqualTo(expectedType));
+            if (assertValue) Assert.That(token.Value, Is.EqualTo(expectedValue));
         }
 
-        private void assert_token_type(string input, TokenType expected)
-            => assert_token_type_and_value(input, expected, skipValue: true);
-
-        private void assert_token_value(string input, TokenType expected)
-            => assert_token_type_and_value(input, expected, skipType: true);
+        private void assert_token_type(string input, TokenType expectedType)
+            => assert_token(input, expectedType, string.Empty, false);
 
         #endregion
 
@@ -47,24 +34,28 @@ namespace TK.JSONParser.Tests
         [TestCase("false", TokenType.False)]
         [TestCase("null", TokenType.Null)]
         public void tokenizer_should_support_simple_tokens(string input, TokenType expected)
-            => assert_token_type_and_value(input, expected);
+            => assert_token(input, expected, input);
 
-        [TestCase(@"""string""", TokenType.String)]
-        [TestCase(@"""a string with spaces""", TokenType.String)]
-        [TestCase(@"""a string with { curlies }""", TokenType.String)]
-        [TestCase(@"""a string with [ brackets ]""", TokenType.String)]
-        [TestCase(@"""a string with 123.456e789 numbers""", TokenType.String)]
-        [TestCase("0", TokenType.Number)]
-        [TestCase("123", TokenType.Number)]
-        [TestCase("123.456", TokenType.Number)]
-        [TestCase("123.456e789", TokenType.Number)]
-        [TestCase("123.456e-789", TokenType.Number)]
-        [TestCase("123.456e+789", TokenType.Number)]
-        [TestCase("123.456E789", TokenType.Number)]
-        [TestCase("123.456E-789", TokenType.Number)]
-        [TestCase("123.456E+789", TokenType.Number)]
-        public void tokenizer_should_support_complex_tokens(string input, TokenType expected)
-            => assert_token_type_and_value(input, expected: expected);
+        [TestCase("\"a string\"", TokenType.String, "a string")]
+        [TestCase("   \" \\\" \"   ", TokenType.String, " \" ")]
+        [TestCase(@""" \\ """, TokenType.String, @" \ ")]
+        [TestCase(@""" \/ """, TokenType.String, @" / ")]
+        //[TestCase(@""" \u0043\u0023 """, TokenType.String, " C# ")] // Not supported yet.
+        public void tokenizer_should_support_strings(string input, TokenType expectedType, string expectedValue)
+            => assert_token(input, expectedType, expectedValue);
+
+        [TestCase("0", TokenType.Integer, "0")]
+        [TestCase("123", TokenType.Integer, "123")]
+        [TestCase("0123", TokenType.Error, "01")]
+        //[TestCase(".456", TokenType.Fraction, "456")] // Not supported yet.
+        //[TestCase("e789", TokenType.Exponent, "789")] // Not supported yet.
+        //[TestCase("e-789", TokenType.Exponent, "")] // Not supported yet.
+        //[TestCase("e+789", TokenType.Exponent, "")] // Not supported yet.
+        //[TestCase("E789", TokenType.Exponent, "789")] // Not supported yet.
+        //[TestCase("E-789", TokenType.Exponent, "")] // Not supported yet.
+        //[TestCase("E+789", TokenType.Exponent, "")] // Not supported yet.
+        public void tokenizer_should_support_numbers(string input, TokenType expectedType, string expectedValue)
+            => assert_token(input, expectedType, expectedValue);
 
         [TestCase(" ", TokenType.End)]
         [TestCase("  {", TokenType.OpenCurlyBrace)]

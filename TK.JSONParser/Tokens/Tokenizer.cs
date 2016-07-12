@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 
 namespace TK.JSONParser.Tokens
 {
@@ -39,6 +35,30 @@ namespace TK.JSONParser.Tokens
         public bool IsIdentifier
             => char.IsLetter(Peek());
 
+        /// <summary>
+        /// Tells if the current char is a number as defined by <see cref="char.IsNumber(char)"/>.
+        /// </summary>
+        public bool IsInteger
+            => char.IsNumber(Peek());
+
+        /// <summary>
+        /// Tells if the current char is a fraction.
+        /// </summary>
+        public bool IsFraction
+            => Peek() == '.';
+
+        /// <summary>
+        /// Tells if the current char is an exponent.
+        /// </summary>
+        public bool IsExponent
+            => Peek() == 'e' || Peek() == 'E';
+
+        /// <summary>
+        /// Tells if the current char is a double quote, which indicate a start or an end of a string literal.
+        /// </summary>
+        public bool IsString
+            => Peek() == '"';
+
         #endregion
 
         public Token GetNextToken()
@@ -58,7 +78,13 @@ namespace TK.JSONParser.Tokens
             else if (Peek() == ']') result = HandleSimpleToken(TokenType.CloseBracket);
             else if (Peek() == ':') result = HandleSimpleToken(TokenType.Colon);
             else if (Peek() == ',') result = HandleSimpleToken(TokenType.Comma);
+            else if (Peek() == '-') result = HandleSimpleToken(TokenType.Minus);
+            else if (Peek() == '+') result = HandleSimpleToken(TokenType.Plus);
+            else if (IsInteger) result = HandleInteger();
+            //else if (IsFraction) result = HandleFraction();
+            //else if (IsExponent) result = HandleExponent();
             else if (IsIdentifier) result = HandleIdentifier();
+            else if (IsString) result = HandleString();
 
             return result;
         }
@@ -109,6 +135,63 @@ namespace TK.JSONParser.Tokens
             else result = new Token(TokenType.Error, string.Format("Unexpected Token <{0}>.", identifier));
 
             return result;
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="Token"/> for the matched number.
+        /// </summary>
+        /// <returns>A new <see cref="Token"/>.</returns>
+        private Token HandleInteger()
+        {
+            Token result = null;
+
+            if (Peek() == '0')
+            {
+                Forward();
+                if (!IsEnd() && IsInteger) result = new Token(TokenType.Error, "0" + Peek());
+                else result = new Token(TokenType.Integer, '0');
+            }
+            else
+            {
+                var sb = new StringBuilder();
+                while(!IsEnd() && IsInteger)
+                {
+                    sb.Append(Peek());
+                    Forward();
+                }
+                result = new Token(TokenType.Integer, sb.ToString());
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="Token"/> for the matched number.
+        /// </summary>
+        /// <returns>A new <see cref="Token"/>.</returns>
+        private Token HandleString()
+        {
+            var sb = new StringBuilder();
+
+            Forward();
+            while (!IsEnd() && !IsString)
+            {
+                if (Peek() == '\\')
+                {
+                    Forward();
+                    if (Peek() == '\\') sb.Append('\\');
+                    else if (Peek() == '/') sb.Append('/');
+                    else if (Peek() == '"') sb.Append('"');
+                    // TODO: Implement the other escape strings :)
+                }
+                else
+                {
+                    sb.Append(Peek());
+                }
+                Forward();
+            }
+
+            return new Token(TokenType.String, sb.ToString());
         }
 
         #endregion

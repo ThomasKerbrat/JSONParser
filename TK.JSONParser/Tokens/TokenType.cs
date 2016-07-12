@@ -14,7 +14,9 @@
         Plus,
 
         String,
-        Number,
+        Integer,
+        Fraction,
+        Exponent,
         True,
         False,
         Null,
