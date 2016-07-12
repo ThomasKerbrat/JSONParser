@@ -3,14 +3,17 @@ using TK.JSONParser.Visitors;
 
 namespace TK.JSONParser.Parsing.Nodes
 {
-    public class StringExpression : INode, IValueExpression
+    public class StringNode : IConstantNode<string>
     {
         private string value;
 
-        public StringExpression(string value)
+        public StringNode(string value)
         {
             this.value = value;
         }
+
+        public string Value
+            => value;
 
         public T Accept<T>(IVisitor<T> visitor)
         {

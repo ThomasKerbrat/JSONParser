@@ -7,11 +7,11 @@ using TK.JSONParser.Visitors;
 
 namespace TK.JSONParser.Parsing.Nodes
 {
-    public class NumberExpression : INode, IValueExpression
+    public class NumberNode : IConstantNode<int>
     {
         private int value;
 
-        public NumberExpression(int value)
+        public NumberNode(int value)
         {
             this.value = value;
         }
