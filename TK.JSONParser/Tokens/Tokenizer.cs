@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace TK.JSONParser
+namespace TK.JSONParser.Tokens
 {
     public class Tokenizer
     {

@@ -1,4 +1,4 @@
-﻿namespace TK.JSONParser.Tokenizer
+﻿namespace TK.JSONParser.Tokens
 {
     public enum TokenType
     {
