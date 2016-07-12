@@ -61,5 +61,48 @@ namespace TK.JSONParser.Tests
         [TestCase("  {", TokenType.OpenCurlyBrace)]
         public void tokenizer_should_ignore_whitespaces(string input, TokenType expected)
             => assert_token_type(input, expected);
+
+        [Test]
+        public void tokenizer_should_parse_a_json_object()
+        {
+            var input = "{ \"prop\": 123, \"prop2\": \"value\" }";
+            var tokenizer = new Tokenizer(input);
+
+            Token token;
+
+            token = tokenizer.GetNextToken();
+            Assert.That(token.Type, Is.EqualTo(TokenType.OpenCurlyBrace));
+
+            token = tokenizer.GetNextToken();
+            Assert.That(token.Type, Is.EqualTo(TokenType.String));
+            Assert.That(token.Value, Is.EqualTo("prop"));
+
+            token = tokenizer.GetNextToken();
+            Assert.That(token.Type, Is.EqualTo(TokenType.Colon));
+
+            token = tokenizer.GetNextToken();
+            Assert.That(token.Type, Is.EqualTo(TokenType.Integer));
+            Assert.That(token.Value, Is.EqualTo("123"));
+
+            token = tokenizer.GetNextToken();
+            Assert.That(token.Type, Is.EqualTo(TokenType.Comma));
+
+            token = tokenizer.GetNextToken();
+            Assert.That(token.Type, Is.EqualTo(TokenType.String));
+            Assert.That(token.Value, Is.EqualTo("prop2"));
+
+            token = tokenizer.GetNextToken();
+            Assert.That(token.Type, Is.EqualTo(TokenType.Colon));
+
+            token = tokenizer.GetNextToken();
+            Assert.That(token.Type, Is.EqualTo(TokenType.String));
+            Assert.That(token.Value, Is.EqualTo("value"));
+
+            token = tokenizer.GetNextToken();
+            Assert.That(token.Type, Is.EqualTo(TokenType.CloseCurlyBrace));
+
+            token = tokenizer.GetNextToken();
+            Assert.That(token.Type, Is.EqualTo(TokenType.End));
+        }
     }
 }
