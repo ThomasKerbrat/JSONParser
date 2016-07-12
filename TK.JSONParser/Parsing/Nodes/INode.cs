@@ -2,7 +2,7 @@
 
 namespace TK.JSONParser.Parsing
 {
-    public interface IExpression
+    public interface INode
     {
         T Accept<T>(IVisitor<T> visitor);
     }

@@ -192,6 +192,9 @@ namespace TK.JSONParser.Tokens
                 Forward();
             }
 
+            // Match closing double quote.
+            Forward();
+
             return new Token(TokenType.String, sb.ToString());
         }
 

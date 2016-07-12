@@ -1,13 +1,13 @@
 ﻿using System;
 using TK.JSONParser.Visitors;
 
-namespace TK.JSONParser.Parsing.Expressions
+namespace TK.JSONParser.Parsing.Nodes
 {
-    public class ErrorExpression : IExpression
+    public class ErrorNode : INode
     {
         private string message;
 
-        public ErrorExpression(string message)
+        public ErrorNode(string message)
         {
             this.message = message;
         }
