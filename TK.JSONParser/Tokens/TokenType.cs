@@ -10,6 +10,8 @@
 
         Colon,
         Comma,
+        Minus,
+        Plus,
 
         String,
         Number,
@@ -17,6 +19,7 @@
         False,
         Null,
 
-        Error
+        Error,
+        End
     }
 }

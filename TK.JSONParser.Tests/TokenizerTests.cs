@@ -12,34 +12,42 @@ namespace TK.JSONParser.Tests
     class TokenizerTests
     {
         [Test]
-        public void empty()
-        {
-
-        }
+        public void empty() { }
 
         #region Util Methods
-        private void test_if(string input, TokenType isOfType)
+
+        private void assert_token_type_and_value(string input, TokenType expected, bool skipType = false, bool skipValue = false)
         {
             Tokenizer tokenizer = new Tokenizer(input);
 
             Token token = tokenizer.GetNextToken();
 
-            Assert.That(token.Type, Is.EqualTo(isOfType));
-            Assert.That(token.Value, Is.EqualTo(input));
+            if (!skipType) Assert.That(token.Type, Is.EqualTo(expected));
+            if (!skipValue) Assert.That(token.Value, Is.EqualTo(input));
         }
+
+        private void assert_token_type(string input, TokenType expected)
+            => assert_token_type_and_value(input, expected, skipValue: true);
+
+        private void assert_token_value(string input, TokenType expected)
+            => assert_token_type_and_value(input, expected, skipType: true);
+
         #endregion
 
+        [TestCase("", TokenType.End)]
         [TestCase("{", TokenType.OpenCurlyBrace)]
         [TestCase("}", TokenType.CloseCurlyBrace)]
         [TestCase("[", TokenType.OpenBracket)]
         [TestCase("]", TokenType.CloseBracket)]
         [TestCase(":", TokenType.Colon)]
         [TestCase(",", TokenType.Comma)]
+        [TestCase("-", TokenType.Minus)]
+        [TestCase("+", TokenType.Plus)]
         [TestCase("true", TokenType.True)]
         [TestCase("false", TokenType.False)]
         [TestCase("null", TokenType.Null)]
         public void tokenizer_should_support_simple_tokens(string input, TokenType expected)
-            => test_if(input, isOfType: expected);
+            => assert_token_type_and_value(input, expected);
 
         [TestCase(@"""string""", TokenType.String)]
         [TestCase(@"""a string with spaces""", TokenType.String)]
@@ -56,7 +64,11 @@ namespace TK.JSONParser.Tests
         [TestCase("123.456E-789", TokenType.Number)]
         [TestCase("123.456E+789", TokenType.Number)]
         public void tokenizer_should_support_complex_tokens(string input, TokenType expected)
-            => test_if(input, isOfType: expected);
+            => assert_token_type_and_value(input, expected: expected);
 
+        [TestCase(" ", TokenType.End)]
+        [TestCase("  {", TokenType.OpenCurlyBrace)]
+        public void tokenizer_should_ignore_whitespaces(string input, TokenType expected)
+            => assert_token_type(input, expected);
     }
 }
