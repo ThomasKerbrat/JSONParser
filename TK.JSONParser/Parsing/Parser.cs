@@ -44,10 +44,11 @@ namespace TK.JSONParser.Parsing
                 return new ObjectNode();
 
             ObjectNode @object = new ObjectNode();
+            Token memberName;
 
-            while (tokenizer.MatchToken(TokenType.String))
+            while (tokenizer.MatchToken(TokenType.String, out memberName))
             {
-                INode expression = ParseMember();
+                INode expression = ParseMember(memberName.Value);
 
                 if (expression is ErrorNode)
                     return expression;
@@ -62,13 +63,8 @@ namespace TK.JSONParser.Parsing
             return @object;
         }
 
-        INode ParseMember()
+        INode ParseMember(string name)
         {
-            // Match the string property name.
-            Token name;
-            if (!tokenizer.MatchToken(TokenType.String, out name))
-                return CreateErrorExpression("string property name");
-
             // Match the colon.
             if (!tokenizer.MatchToken(TokenType.Colon))
                 return CreateErrorExpression(":");
@@ -78,7 +74,7 @@ namespace TK.JSONParser.Parsing
             if (value is ErrorNode)
                 return value;
 
-            return new KeyValueNode(name.Value, value);
+            return new KeyValueNode(name, value);
         }
 
         INode ParseValue()

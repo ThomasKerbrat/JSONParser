@@ -33,7 +33,29 @@ namespace TK.JSONParser.Tests
             INode expression = parser.ParseJSON();
 
             Assert.That(expression, Is.TypeOf<ObjectNode>());
-            Assert.That(((ObjectNode)expression).Items.Count, Is.EqualTo(0));
+
+            ObjectNode @object = (ObjectNode)expression;
+            Assert.That(@object.Items.Count, Is.EqualTo(2));
+
+            Assert.That(@object.Items[0].Key, Is.EqualTo("prop1"));
+            Assert.That(@object.Items[0].Value, Is.TypeOf<NumberNode>());
+            Assert.That(((NumberNode)@object.Items[0].Value).Value, Is.EqualTo(123));
+
+            Assert.That(@object.Items[1].Key, Is.EqualTo("prop2"));
+            Assert.That(@object.Items[1].Value, Is.TypeOf<StringNode>());
+            Assert.That(((StringNode)@object.Items[1].Value).Value, Is.EqualTo("value"));
+        }
+
+        [Test]
+        public void parser_should_not_parse_object_with_same_members()
+        {
+            var input = "{ \"prop1\": 123, \"prop1\": \"value\" }";
+            var parser = new Parser(input);
+
+            INode expression = parser.ParseJSON();
+
+            Assert.That(expression, Is.TypeOf<ErrorNode>());
+            Assert.That(((ErrorNode)expression).ToString(), Is.EqualTo("Member \"prop1\" already present in object."));
         }
 
         [Test]
@@ -58,15 +80,6 @@ namespace TK.JSONParser.Tests
 
             Assert.That(expression, Is.TypeOf<ArrayNode>());
             Assert.That(((ArrayNode)expression).Items.Count, Is.EqualTo(0));
-        }
-
-        [TestCase("123", typeof(NumberNode))]
-        [TestCase("\"string\"", typeof(StringNode))]
-        public void parser_should_parse_values(string input, Type expected)
-        {
-            var parser = new Parser(input);
-            INode expression = parser.ParseJSON();
-            Assert.That(expression, Is.TypeOf(expected));
         }
     }
 }

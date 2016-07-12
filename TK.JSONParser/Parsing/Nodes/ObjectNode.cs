@@ -25,8 +25,12 @@ namespace TK.JSONParser.Parsing.Nodes
         {
             if (existingKeys == null)
                 existingKeys = new List<string>();
+            else if (existingKeys.Contains(node.Key))
+                return false;
 
-            throw new NotImplementedException();
+            items.Add(node);
+            existingKeys.Add(node.Key);
+            return true;
         }
 
         public T Accept<T>(IVisitor<T> visitor)
