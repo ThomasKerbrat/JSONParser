@@ -7,6 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TK.JSONParser", "TK.JSONPar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TK.JSONParser.Tests", "TK.JSONParser.Tests\TK.JSONParser.Tests.csproj", "{4CFB348D-F3D9-4927-BCB7-DE09098A21F6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{844B35B6-6464-4351-9DBC-1B651F269F48}"
+	ProjectSection(SolutionItems) = preProject
+		Grammar.txt = Grammar.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
