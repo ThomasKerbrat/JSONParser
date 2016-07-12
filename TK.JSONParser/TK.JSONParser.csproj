@@ -42,11 +42,13 @@
   <ItemGroup>
     <Compile Include="Parsing\Nodes\ArrayNode.cs" />
     <Compile Include="Parsing\Nodes\ErrorNode.cs" />
+    <Compile Include="Parsing\Nodes\IConstantNode.cs" />
     <Compile Include="Parsing\Nodes\MemberNode.cs" />
     <Compile Include="Parsing\Nodes\NumberExpression.cs" />
     <Compile Include="Parsing\Nodes\ObjectNode.cs" />
     <Compile Include="Parsing\Nodes\INode.cs" />
     <Compile Include="Parsing\Nodes\IValueExpression.cs" />
+    <Compile Include="Parsing\Nodes\IStructNode.cs" />
     <Compile Include="Parsing\Parser.cs" />
     <Compile Include="Parsing\Nodes\StringExpression.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
