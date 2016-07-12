@@ -1,0 +1,18 @@
+object          -> '{' members? '}'
+
+members         -> pair (, members)*
+pair            -> string ':' value
+
+array           -> '[' elements ']'
+elements        -> value (, elements)?
+
+value           -> string | number | object | array | 'true' | 'false' | 'null'
+
+string          -> '"' char* '"'
+char            -> /* any unicode character except '"' or '\' */ | '\"' | '\\' | '\/' | '\b' | '\f' | '\n' | '\r' | ' \t' | '\u' (four hex digits)
+
+number          -> int ((frac exp?) | exp)?
+frac            -> '.' digits
+exp             -> e digits
+digits          -> digit+
+e               -> 'e' 'e+' 'e-' 'E' 'E+' 'E-'
