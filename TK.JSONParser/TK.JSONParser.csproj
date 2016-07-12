@@ -43,11 +43,10 @@
     <Compile Include="Parsing\Nodes\ArrayNode.cs" />
     <Compile Include="Parsing\Nodes\ErrorNode.cs" />
     <Compile Include="Parsing\Nodes\IConstantNode.cs" />
-    <Compile Include="Parsing\Nodes\MemberNode.cs" />
+    <Compile Include="Parsing\Nodes\KeyValueNode.cs" />
     <Compile Include="Parsing\Nodes\NumberNode.cs" />
     <Compile Include="Parsing\Nodes\ObjectNode.cs" />
     <Compile Include="Parsing\Nodes\INode.cs" />
-    <Compile Include="Parsing\Nodes\IValueExpression.cs" />
     <Compile Include="Parsing\Nodes\IStructNode.cs" />
     <Compile Include="Parsing\Parser.cs" />
     <Compile Include="Parsing\Nodes\StringNode.cs" />
