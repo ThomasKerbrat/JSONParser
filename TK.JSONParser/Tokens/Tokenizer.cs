@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 namespace TK.JSONParser.Tokens
 {
@@ -86,7 +87,7 @@ namespace TK.JSONParser.Tokens
             else if (IsIdentifier) result = HandleIdentifier();
             else if (IsString) result = HandleString();
 
-            return result;
+            return CurrentToken = result;
         }
 
         #region Handle Methods
@@ -154,7 +155,7 @@ namespace TK.JSONParser.Tokens
             else
             {
                 var sb = new StringBuilder();
-                while(!IsEnd() && IsInteger)
+                while (!IsEnd() && IsInteger)
                 {
                     sb.Append(Peek());
                     Forward();
@@ -215,6 +216,46 @@ namespace TK.JSONParser.Tokens
         /// Increments the <see cref="position"/> by 1 (one).
         /// </summary>
         private void Forward() => position++;
+
+        #endregion
+
+        #region Token Matchers
+
+        /// <summary>
+        /// Calls <see cref="MatchToken(TokenType, out Token)"/> but discard the Token value assigned in the method.
+        /// </summary>
+        /// <param name="type">Type to match against.</param>
+        /// <returns>Returns if the <see cref="CurrentToken"/> type has matched with the provided Token type.</returns>
+        public bool MatchToken(TokenType type, Token token = null)
+            => MatchToken(type, out token);
+
+        /// <summary>
+        /// Match the <see cref="CurrentToken"/> type to any <see cref="TokenType"/> provided.
+        /// </summary>
+        /// <param name="type">Type to match against.</param>
+        /// <param name="token">Variable that will be assigned during the match.</param>
+        /// <returns>Returns if the <see cref="CurrentToken"/> type has matched with the provided Token type.</returns>
+        public bool MatchToken(TokenType type, out Token token)
+            => MatchToken(_type => _type == type, out token);
+
+        /// <summary>
+        /// Match the <see cref="CurrentToken"/> type to any <see cref="TokenType"/> with the provided predicate.
+        /// </summary>
+        /// <param name="predicate">A predicate that will determine if the <see cref="TokenType"/> has matched.</param>
+        /// <param name="token">Variable that will be assigned during the match.</param>
+        /// <returns>Returns if the <see cref="CurrentToken"/> type has matched according to the provided predicate.</returns>
+        public bool MatchToken(Func<TokenType, bool> predicate, out Token token)
+        {
+            if (predicate(CurrentToken.Type))
+            {
+                token = CurrentToken;
+                GetNextToken();
+                return true;
+            }
+
+            token = null;
+            return false;
+        }
 
         #endregion
     }
