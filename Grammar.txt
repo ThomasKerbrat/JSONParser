@@ -11,8 +11,8 @@ value           -> string | number | object | array | 'true' | 'false' | 'null'
 string          -> '"' char* '"'
 char            -> /* any unicode character except '"' or '\' */ | '\"' | '\\' | '\/' | '\b' | '\f' | '\n' | '\r' | ' \t' | '\u' (four hex digits)
 
-number          -> int ((frac exp?) | exp)?
+number          -> int frac? exp?
 frac            -> '.' digits
 exp             -> e digits
-digits          -> digit+
+int          -> '-'? (0 | (1-9 (0-9)*) )
 e               -> 'e' 'e+' 'e-' 'E' 'E+' 'E-'
