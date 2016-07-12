@@ -1,7 +1,7 @@
 ﻿using System;
 using TK.JSONParser.Visitors;
 
-namespace TK.JSONParser.Parsing.Values
+namespace TK.JSONParser.Parsing.Nodes
 {
     public class StringExpression : INode, IValueExpression
     {

@@ -1,4 +1,4 @@
-﻿namespace TK.JSONParser.Parsing.Values
+﻿namespace TK.JSONParser.Parsing.Nodes
 {
     public interface IValueExpression : INode
     {

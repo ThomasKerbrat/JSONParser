@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using TK.JSONParser.Parsing;
 using TK.JSONParser.Parsing.Nodes;
-using TK.JSONParser.Parsing.Values;
 
 namespace TK.JSONParser.Tests
 {

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TK.JSONParser.Visitors;
 
-namespace TK.JSONParser.Parsing.Values
+namespace TK.JSONParser.Parsing.Nodes
 {
     public class NumberExpression : INode, IValueExpression
     {
