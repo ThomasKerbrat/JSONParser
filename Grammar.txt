@@ -1,5 +1,4 @@
 object          -> '{' members? '}'
-
 members         -> pair (, members)*
 pair            -> string ':' value
 

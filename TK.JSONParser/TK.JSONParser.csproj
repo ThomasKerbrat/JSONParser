@@ -40,12 +40,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Parser\Parser.cs" />
+    <Compile Include="Parsing\Expressions\ArrayExpression.cs" />
+    <Compile Include="Parsing\Expressions\ErrorExpression.cs" />
+    <Compile Include="Parsing\Expressions\MemberExpression.cs" />
+    <Compile Include="Parsing\Values\NumberExpression.cs" />
+    <Compile Include="Parsing\Expressions\ObjectExpression.cs" />
+    <Compile Include="Parsing\Expressions\IExpression.cs" />
+    <Compile Include="Parsing\Values\IValueExpression.cs" />
+    <Compile Include="Parsing\Parser.cs" />
+    <Compile Include="Parsing\Values\StringExpression.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tokens\Token.cs" />
     <Compile Include="Tokens\Tokenizer.cs" />
     <Compile Include="Tokens\TokenType.cs" />
+    <Compile Include="Visitors\InlineVisitor.cs" />
+    <Compile Include="Visitors\IVisitor.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
