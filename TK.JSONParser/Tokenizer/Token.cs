@@ -1,4 +1,4 @@
-﻿namespace TK.JSONParser.Tokens
+﻿namespace TK.JSONParser.Tokenizer
 {
     public class Token
     {

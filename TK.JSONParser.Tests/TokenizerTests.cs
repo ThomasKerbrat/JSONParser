@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using TK.JSONParser.Tokens;
+using TK.JSONParser.Tokenizer;
 
 namespace TK.JSONParser.Tests
 {
