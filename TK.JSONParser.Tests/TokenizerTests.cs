@@ -62,6 +62,10 @@ namespace TK.JSONParser.Tests
         public void tokenizer_should_ignore_whitespaces(string input, TokenType expected)
             => assert_token_type(input, expected);
 
+        [TestCase(" // this is a comment ", TokenType.Comment, " this is a comment ")]
+        public void tokenizer_should_support_comments(string input, TokenType expectedType, string expectedValue)
+            => assert_token(input, expectedType, expectedValue);
+
         [Test]
         public void tokenizer_should_parse_a_json_object()
         {

@@ -21,6 +21,8 @@
         False,
         Null,
 
+        Comment,
+
         Error,
         End
     }
