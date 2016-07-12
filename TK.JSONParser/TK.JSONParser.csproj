@@ -40,12 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Parsing\Expressions\ArrayExpression.cs" />
-    <Compile Include="Parsing\Expressions\ErrorExpression.cs" />
-    <Compile Include="Parsing\Expressions\MemberExpression.cs" />
+    <Compile Include="Parsing\Nodes\ArrayNode.cs" />
+    <Compile Include="Parsing\Nodes\ErrorNode.cs" />
+    <Compile Include="Parsing\Nodes\MemberNode.cs" />
     <Compile Include="Parsing\Values\NumberExpression.cs" />
-    <Compile Include="Parsing\Expressions\ObjectExpression.cs" />
-    <Compile Include="Parsing\Expressions\IExpression.cs" />
+    <Compile Include="Parsing\Nodes\ObjectNode.cs" />
+    <Compile Include="Parsing\Nodes\INode.cs" />
     <Compile Include="Parsing\Values\IValueExpression.cs" />
     <Compile Include="Parsing\Parser.cs" />
     <Compile Include="Parsing\Values\StringExpression.cs" />

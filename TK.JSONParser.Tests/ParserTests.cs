@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TK.JSONParser.Parsing;
-using TK.JSONParser.Parsing.Expressions;
+using TK.JSONParser.Parsing.Nodes;
 using TK.JSONParser.Parsing.Values;
 
 namespace TK.JSONParser.Tests
@@ -19,10 +19,10 @@ namespace TK.JSONParser.Tests
             var input = "{}";
             var parser = new Parser(input);
 
-            IExpression expression = parser.ParseJSON();
+            INode expression = parser.ParseJSON();
 
-            Assert.That(expression, Is.TypeOf<ObjectExpression>());
-            Assert.That(((ObjectExpression)expression).Members.Count, Is.EqualTo(0));
+            Assert.That(expression, Is.TypeOf<ObjectNode>());
+            Assert.That(((ObjectNode)expression).Members.Count, Is.EqualTo(0));
         }
 
         [Test]
@@ -31,10 +31,10 @@ namespace TK.JSONParser.Tests
             var input = @"{ ""prop1"": 123, ""prop2"": ""value"" }";
             var parser = new Parser(input);
 
-            IExpression expression = parser.ParseJSON();
+            INode expression = parser.ParseJSON();
 
-            Assert.That(expression, Is.TypeOf<ObjectExpression>());
-            Assert.That(((ObjectExpression)expression).Members.Count, Is.EqualTo(0));
+            Assert.That(expression, Is.TypeOf<ObjectNode>());
+            Assert.That(((ObjectNode)expression).Members.Count, Is.EqualTo(0));
         }
 
         [Test]
@@ -43,10 +43,10 @@ namespace TK.JSONParser.Tests
             var input = "[]";
             var parser = new Parser(input);
 
-            IExpression expression = parser.ParseJSON();
+            INode expression = parser.ParseJSON();
 
-            Assert.That(expression, Is.TypeOf<ArrayExpression>());
-            Assert.That(((ArrayExpression)expression).Elements.Count, Is.EqualTo(0));
+            Assert.That(expression, Is.TypeOf<ArrayNode>());
+            Assert.That(((ArrayNode)expression).Elements.Count, Is.EqualTo(0));
         }
 
         [Test]
@@ -55,10 +55,10 @@ namespace TK.JSONParser.Tests
             var input = @"[ 123, ""value"" ]";
             var parser = new Parser(input);
 
-            IExpression expression = parser.ParseJSON();
+            INode expression = parser.ParseJSON();
 
-            Assert.That(expression, Is.TypeOf<ArrayExpression>());
-            Assert.That(((ArrayExpression)expression).Elements.Count, Is.EqualTo(0));
+            Assert.That(expression, Is.TypeOf<ArrayNode>());
+            Assert.That(((ArrayNode)expression).Elements.Count, Is.EqualTo(0));
         }
 
         [TestCase("123", typeof(NumberExpression))]
@@ -66,7 +66,7 @@ namespace TK.JSONParser.Tests
         public void parser_should_parse_values(string input, Type expected)
         {
             var parser = new Parser(input);
-            IExpression expression = parser.ParseJSON();
+            INode expression = parser.ParseJSON();
             Assert.That(expression, Is.TypeOf(expected));
         }
     }

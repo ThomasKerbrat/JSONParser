@@ -3,7 +3,7 @@ using TK.JSONParser.Visitors;
 
 namespace TK.JSONParser.Parsing.Values
 {
-    public class StringExpression : IExpression, IValueExpression
+    public class StringExpression : INode, IValueExpression
     {
         private string value;
 

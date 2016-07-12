@@ -7,21 +7,21 @@ using System.Threading.Tasks;
 using TK.JSONParser.Parsing.Values;
 using TK.JSONParser.Visitors;
 
-namespace TK.JSONParser.Parsing.Expressions
+namespace TK.JSONParser.Parsing.Nodes
 {
-    public class ObjectExpression : IExpression, IValueExpression
+    public class ObjectNode : INode, IValueExpression
     {
-        private Dictionary<string, MemberExpression> members;
+        private Dictionary<string, MemberNode> members;
 
-        public ObjectExpression()
+        public ObjectNode()
         {
-            this.members = new Dictionary<string, MemberExpression>();
+            this.members = new Dictionary<string, MemberNode>();
         }
 
-        public IReadOnlyDictionary<string, MemberExpression> Members
+        public IReadOnlyDictionary<string, MemberNode> Members
             => members;
 
-        internal bool AddMember(MemberExpression expression)
+        internal bool AddMember(MemberNode expression)
         {
             throw new NotImplementedException();
         }

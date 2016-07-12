@@ -6,19 +6,19 @@ using System.Threading.Tasks;
 using TK.JSONParser.Parsing.Values;
 using TK.JSONParser.Visitors;
 
-namespace TK.JSONParser.Parsing.Expressions
+namespace TK.JSONParser.Parsing.Nodes
 {
-    public class ArrayExpression : IExpression, IValueExpression
+    public class MemberNode : INode
     {
-        private List<IValueExpression> elements;
-
-        public ArrayExpression()
+        public MemberNode(string memberName, IValueExpression value)
         {
-            elements = new List<IValueExpression>();
+            Name = memberName;
+            Value = value;
         }
 
-        public IReadOnlyList<IValueExpression> Elements
-            => elements;
+        public string Name { get; }
+
+        public IValueExpression Value { get; set; }
 
         public T Accept<T>(IVisitor<T> visitor)
         {

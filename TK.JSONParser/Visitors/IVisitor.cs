@@ -1,20 +1,20 @@
-﻿using TK.JSONParser.Parsing.Expressions;
+﻿using TK.JSONParser.Parsing.Nodes;
 using TK.JSONParser.Parsing.Values;
 
 namespace TK.JSONParser.Visitors
 {
     public interface IVisitor<T>
     {
-        T Visit(ArrayExpression expression);
+        T Visit(ArrayNode expression);
 
-        T Visit(ObjectExpression expression);
+        T Visit(ObjectNode expression);
 
-        T Visit(MemberExpression expression);
+        T Visit(MemberNode expression);
 
         T Visit(NumberExpression expression);
 
         T Visit(StringExpression expression);
 
-        T Visit(ErrorExpression expression);
+        T Visit(ErrorNode expression);
     }
 }

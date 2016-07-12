@@ -7,7 +7,7 @@ using TK.JSONParser.Visitors;
 
 namespace TK.JSONParser.Parsing.Values
 {
-    public class NumberExpression : IExpression, IValueExpression
+    public class NumberExpression : INode, IValueExpression
     {
         private int value;
 

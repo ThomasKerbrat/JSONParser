@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TK.JSONParser.Parsing.Expressions;
+using TK.JSONParser.Parsing.Nodes;
 using TK.JSONParser.Parsing.Values;
 using TK.JSONParser.Tokens;
 
@@ -19,9 +19,9 @@ namespace TK.JSONParser.Parsing
             tokenizer.GetNextToken();
         }
 
-        public IExpression ParseJSON()
+        public INode ParseJSON()
         {
-            IExpression json;
+            INode json;
 
             if (tokenizer.MatchToken(TokenType.OpenBracket))
                 json = ParseArray();
@@ -35,31 +35,31 @@ namespace TK.JSONParser.Parsing
 
         #region Grammar Methods
 
-        IExpression ParseArray()
+        INode ParseArray()
         {
             if (tokenizer.MatchToken(TokenType.CloseBracket))
-                return new ArrayExpression();
+                return new ArrayNode();
 
             throw new NotImplementedException();
         }
 
-        IExpression ParseObject()
+        INode ParseObject()
         {
             if (tokenizer.MatchToken(TokenType.CloseCurlyBrace))
-                return new ObjectExpression();
+                return new ObjectNode();
 
-            ObjectExpression @object = new ObjectExpression();
+            ObjectNode @object = new ObjectNode();
 
             while (tokenizer.MatchToken(TokenType.String))
             {
-                IExpression expression = ParseMember();
+                INode expression = ParseMember();
 
-                if (expression is ErrorExpression)
+                if (expression is ErrorNode)
                     return expression;
 
-                MemberExpression member = (MemberExpression)expression;
+                MemberNode member = (MemberNode)expression;
                 if (!@object.AddMember(member))
-                    return new ErrorExpression(string.Format("Member \"{0}\" already present in object.", member.Name));
+                    return new ErrorNode(string.Format("Member \"{0}\" already present in object.", member.Name));
 
                 tokenizer.MatchToken(TokenType.Comma);
             }
@@ -67,21 +67,21 @@ namespace TK.JSONParser.Parsing
             return @object;
         }
 
-        IExpression ParseMember()
+        INode ParseMember()
         {
             Token name;
             if (!tokenizer.MatchToken(TokenType.String, out name))
                 return CreateErrorExpression("string");
 
-            IExpression expression = ParseValue();
-            if (expression is ErrorExpression)
+            INode expression = ParseValue();
+            if (expression is ErrorNode)
                 return expression;
 
             IValueExpression value = (IValueExpression)expression;
-            return new MemberExpression(name.Value, value);
+            return new MemberNode(name.Value, value);
         }
 
-        IExpression ParseValue()
+        INode ParseValue()
         {
             Token token;
             if (tokenizer.MatchToken(TokenType.Integer, out token))
@@ -90,7 +90,7 @@ namespace TK.JSONParser.Parsing
                 if (int.TryParse(token.Value, out value))
                     return new NumberExpression(value);
                 else
-                    return new ErrorExpression("Can not parse number");
+                    return new ErrorNode("Can not parse number");
             }
             else if (tokenizer.MatchToken(TokenType.String, out token))
             {
@@ -115,21 +115,21 @@ namespace TK.JSONParser.Parsing
         #region Error Helpers
 
         /// <summary>
-        /// Creates a new <see cref="ErrorExpression"/> saying the <see cref="Parser"/> is expecting
+        /// Creates a new <see cref="ErrorNode"/> saying the <see cref="Parser"/> is expecting
         /// the given <paramref name="expected"/> but it found <see cref="Tokenizer.CurrentToken"/>.
         /// </summary>
         /// <param name="expected">The string expected by the <see cref="Parser"/>.</param>
-        /// <returns>A new <see cref="ErrorExpression"/>.</returns>
-        ErrorExpression CreateErrorExpression(string expected)
-            => new ErrorExpression(string.Format(
+        /// <returns>A new <see cref="ErrorNode"/>.</returns>
+        ErrorNode CreateErrorExpression(string expected)
+            => new ErrorNode(string.Format(
                 "Expected <{0}>, but <{1}> found.", expected, tokenizer.CurrentToken.Value));
 
         /// <summary>
-        /// Creates a new <see cref="ErrorExpression"/> with the <see cref="Tokenizer.CurrentToken"/> as the unexpected value.
+        /// Creates a new <see cref="ErrorNode"/> with the <see cref="Tokenizer.CurrentToken"/> as the unexpected value.
         /// </summary>
-        /// <returns>A new <see cref="ErrorExpression"/>.</returns>
-        ErrorExpression CreateUnexpectedErrorExpression()
-            => new ErrorExpression(string.Format(
+        /// <returns>A new <see cref="ErrorNode"/>.</returns>
+        ErrorNode CreateUnexpectedErrorExpression()
+            => new ErrorNode(string.Format(
                 "Unexpected token <{0}>.", tokenizer.CurrentToken.Value));
 
         #endregion

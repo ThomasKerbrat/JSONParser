@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TK.JSONParser.Parsing;
-using TK.JSONParser.Parsing.Expressions;
+using TK.JSONParser.Parsing.Nodes;
 using TK.JSONParser.Parsing.Values;
 
 namespace TK.JSONParser.Visitors
 {
     public class InlineVisitor : IVisitor<string>
     {
-        public string Visit(ObjectExpression expression)
+        public string Visit(ObjectNode expression)
         {
             throw new NotImplementedException();
         }
@@ -26,17 +26,17 @@ namespace TK.JSONParser.Visitors
             throw new NotImplementedException();
         }
 
-        public string Visit(MemberExpression expression)
+        public string Visit(MemberNode expression)
         {
             throw new NotImplementedException();
         }
 
-        public string Visit(ArrayExpression expression)
+        public string Visit(ArrayNode expression)
         {
             throw new NotImplementedException();
         }
 
-        public string Visit(ErrorExpression expression)
+        public string Visit(ErrorNode expression)
         {
             throw new NotImplementedException();
         }
