@@ -7,11 +7,11 @@ namespace TK.JSONParser.Parsing.Nodes
     {
         public KeyValueNode(string key, INode value)
         {
-            Key = key;
+            Key = new StringNode(key);
             Value = value;
         }
 
-        public string Key { get; }
+        public StringNode Key { get; }
 
         public INode Value { get; }
 
