@@ -58,16 +58,26 @@ namespace TK.JSONParser.Parsing
                 return new ObjectNode();
 
             ObjectNode @object = new ObjectNode();
-            Token memberName;
+            Token commentOrPropertyName;
 
-            while (tokenizer.MatchToken(TokenType.String, out memberName))
+            while (tokenizer.MatchToken(type => type == TokenType.String || type == TokenType.Comment, out commentOrPropertyName))
             {
-                INode expression = ParseMember(memberName.Value);
+                Token comment = null;
+                if (commentOrPropertyName.Type == TokenType.Comment)
+                {
+                    comment = commentOrPropertyName;
+                    if (!tokenizer.MatchToken(TokenType.String, out commentOrPropertyName))
+                        return CreateErrorExpression("string after comment");
+                }
+
+                INode expression = ParseMember(commentOrPropertyName.Value);
 
                 if (expression is ErrorNode)
                     return expression;
 
                 KeyValueNode member = (KeyValueNode)expression;
+                if (comment != null)
+                    member.AddComment(comment.Value);
                 if (!@object.AddItem(member))
                     return new ErrorNode(string.Format("Member \"{0}\" already present in object.", member.Key.Value));
 
