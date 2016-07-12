@@ -21,19 +21,19 @@ namespace TK.JSONParser.Tests
             INode expression = parser.ParseJSON();
 
             Assert.That(expression, Is.TypeOf<ObjectNode>());
-            Assert.That(((ObjectNode)expression).Members.Count, Is.EqualTo(0));
+            Assert.That(((ObjectNode)expression).Items.Count, Is.EqualTo(0));
         }
 
         [Test]
         public void parser_should_parse_object_with_members()
         {
-            var input = @"{ ""prop1"": 123, ""prop2"": ""value"" }";
+            var input = "{ \"prop1\": 123, \"prop2\": \"value\" }";
             var parser = new Parser(input);
 
             INode expression = parser.ParseJSON();
 
             Assert.That(expression, Is.TypeOf<ObjectNode>());
-            Assert.That(((ObjectNode)expression).Members.Count, Is.EqualTo(0));
+            Assert.That(((ObjectNode)expression).Items.Count, Is.EqualTo(0));
         }
 
         [Test]
@@ -45,7 +45,7 @@ namespace TK.JSONParser.Tests
             INode expression = parser.ParseJSON();
 
             Assert.That(expression, Is.TypeOf<ArrayNode>());
-            Assert.That(((ArrayNode)expression).Elements.Count, Is.EqualTo(0));
+            Assert.That(((ArrayNode)expression).Items.Count, Is.EqualTo(0));
         }
 
         [Test]
@@ -57,11 +57,11 @@ namespace TK.JSONParser.Tests
             INode expression = parser.ParseJSON();
 
             Assert.That(expression, Is.TypeOf<ArrayNode>());
-            Assert.That(((ArrayNode)expression).Elements.Count, Is.EqualTo(0));
+            Assert.That(((ArrayNode)expression).Items.Count, Is.EqualTo(0));
         }
 
-        [TestCase("123", typeof(NumberExpression))]
-        [TestCase("\"string\"", typeof(StringExpression))]
+        [TestCase("123", typeof(NumberNode))]
+        [TestCase("\"string\"", typeof(StringNode))]
         public void parser_should_parse_values(string input, Type expected)
         {
             var parser = new Parser(input);

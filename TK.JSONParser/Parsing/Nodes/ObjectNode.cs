@@ -8,20 +8,24 @@ using TK.JSONParser.Visitors;
 
 namespace TK.JSONParser.Parsing.Nodes
 {
-    public class ObjectNode : INode, IValueExpression
+    public class ObjectNode : IStructNode<KeyValueNode>
     {
-        private Dictionary<string, MemberNode> members;
+        private List<KeyValueNode> items;
+        private List<string> existingKeys;
 
         public ObjectNode()
         {
-            this.members = new Dictionary<string, MemberNode>();
+            items = new List<KeyValueNode>();
         }
 
-        public IReadOnlyDictionary<string, MemberNode> Members
-            => members;
+        public IReadOnlyList<KeyValueNode> Items
+            => items;
 
-        internal bool AddMember(MemberNode expression)
+        internal bool AddKeyValueNode(KeyValueNode node)
         {
+            if (existingKeys == null)
+                existingKeys = new List<string>();
+
             throw new NotImplementedException();
         }
 

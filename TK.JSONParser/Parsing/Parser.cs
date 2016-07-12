@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TK.JSONParser.Parsing.Nodes;
 using TK.JSONParser.Tokens;
 
@@ -56,9 +52,9 @@ namespace TK.JSONParser.Parsing
                 if (expression is ErrorNode)
                     return expression;
 
-                MemberNode member = (MemberNode)expression;
-                if (!@object.AddMember(member))
-                    return new ErrorNode(string.Format("Member \"{0}\" already present in object.", member.Name));
+                KeyValueNode member = (KeyValueNode)expression;
+                if (!@object.AddKeyValueNode(member))
+                    return new ErrorNode(string.Format("Member \"{0}\" already present in object.", member.Key));
 
                 tokenizer.MatchToken(TokenType.Comma);
             }
@@ -68,16 +64,21 @@ namespace TK.JSONParser.Parsing
 
         INode ParseMember()
         {
+            // Match the string property name.
             Token name;
             if (!tokenizer.MatchToken(TokenType.String, out name))
-                return CreateErrorExpression("string");
+                return CreateErrorExpression("string property name");
 
-            INode expression = ParseValue();
-            if (expression is ErrorNode)
-                return expression;
+            // Match the colon.
+            if (!tokenizer.MatchToken(TokenType.Colon))
+                return CreateErrorExpression(":");
 
-            IValueExpression value = (IValueExpression)expression;
-            return new MemberNode(name.Value, value);
+            // Match the value.
+            INode value = ParseValue();
+            if (value is ErrorNode)
+                return value;
+
+            return new KeyValueNode(name.Value, value);
         }
 
         INode ParseValue()
@@ -87,13 +88,13 @@ namespace TK.JSONParser.Parsing
             {
                 int value;
                 if (int.TryParse(token.Value, out value))
-                    return new NumberExpression(value);
+                    return new NumberNode(value);
                 else
                     return new ErrorNode("Can not parse number");
             }
             else if (tokenizer.MatchToken(TokenType.String, out token))
             {
-                return new StringExpression(token.Value);
+                return new StringNode(token.Value);
             }
             else if (tokenizer.MatchToken(TokenType.OpenCurlyBrace))
             {

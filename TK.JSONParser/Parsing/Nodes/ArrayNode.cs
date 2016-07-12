@@ -7,17 +7,17 @@ using TK.JSONParser.Visitors;
 
 namespace TK.JSONParser.Parsing.Nodes
 {
-    public class ArrayNode : INode, IValueExpression
+    public class ArrayNode : IStructNode<INode>
     {
-        private List<IValueExpression> elements;
+        private List<INode> items;
 
         public ArrayNode()
         {
-            elements = new List<IValueExpression>();
+            items = new List<INode>();
         }
 
-        public IReadOnlyList<IValueExpression> Elements
-            => elements;
+        public IReadOnlyList<INode> Items
+            => items;
 
         public T Accept<T>(IVisitor<T> visitor)
         {

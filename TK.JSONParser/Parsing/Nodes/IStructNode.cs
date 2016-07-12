@@ -2,8 +2,8 @@
 
 namespace TK.JSONParser.Parsing.Nodes
 {
-    public interface IStructNode : INode
+    public interface IStructNode<T> : INode
     {
-        IReadOnlyCollection<INode> Items { get; }
+        IReadOnlyList<T> Items { get; }
     }
 }
