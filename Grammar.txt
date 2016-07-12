@@ -1,9 +1,9 @@
 object          -> '{' members? '}'
-members         -> pair (, members)*
+members         -> comment? pair (, members)*
 pair            -> string ':' value
 
 array           -> '[' elements ']'
-elements        -> value (, elements)?
+elements        -> comment? value (, elements)?
 
 value           -> string | number | object | array | 'true' | 'false' | 'null'
 
