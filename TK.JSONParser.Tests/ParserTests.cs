@@ -79,7 +79,24 @@ namespace TK.JSONParser.Tests
             INode expression = parser.ParseJSON();
 
             Assert.That(expression, Is.TypeOf<ArrayNode>());
-            Assert.That(((ArrayNode)expression).Items.Count, Is.EqualTo(0));
+
+            ArrayNode array = (ArrayNode)expression;
+            Assert.That(array.Items.Count, Is.EqualTo(2));
+
+            Assert.That(array.Items[0], Is.TypeOf<NumberNode>());
+            Assert.That(((NumberNode)array.Items[0]).Value, Is.EqualTo(123));
+
+            Assert.That(array.Items[1], Is.TypeOf<StringNode>());
+            Assert.That(((StringNode)array.Items[1]).Value, Is.EqualTo("value"));
+        }
+
+        [TestCase("{ \"prop\": 123, \"prop2\": [ 456, \"789\" ] }")]
+        public void parser_should_not_parse_to_error(string input)
+        {
+            var parser = new Parser(input);
+            INode expression = parser.ParseJSON();
+            Assert.That(expression, Is.Not.TypeOf<ErrorNode>());
+
         }
     }
 }

@@ -35,7 +35,21 @@ namespace TK.JSONParser.Parsing
             if (tokenizer.MatchToken(TokenType.CloseBracket))
                 return new ArrayNode();
 
-            throw new NotImplementedException();
+            ArrayNode array = new ArrayNode();
+
+            while (!tokenizer.MatchToken(TokenType.CloseBracket))
+            {
+                INode expression = ParseValue();
+
+                if (expression is ErrorNode)
+                    return expression;
+
+                array.AddItem(expression);
+
+                tokenizer.MatchToken(TokenType.Comma);
+            }
+
+            return array;
         }
 
         INode ParseObject()
@@ -54,7 +68,7 @@ namespace TK.JSONParser.Parsing
                     return expression;
 
                 KeyValueNode member = (KeyValueNode)expression;
-                if (!@object.AddKeyValueNode(member))
+                if (!@object.AddItem(member))
                     return new ErrorNode(string.Format("Member \"{0}\" already present in object.", member.Key));
 
                 tokenizer.MatchToken(TokenType.Comma);

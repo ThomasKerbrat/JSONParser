@@ -21,7 +21,7 @@ namespace TK.JSONParser.Parsing.Nodes
         public IReadOnlyList<KeyValueNode> Items
             => items;
 
-        internal bool AddKeyValueNode(KeyValueNode node)
+        public bool AddItem(KeyValueNode node)
         {
             if (existingKeys == null)
                 existingKeys = new List<string>();
